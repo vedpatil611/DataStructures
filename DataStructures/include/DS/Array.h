@@ -3,17 +3,77 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
-#include <memory>
-#include "Iterator.h"
-
 namespace ds
 {
+	template<typename T>
+	class ArrayIterator
+	{
+	public:
+		using DataType = typename T::DataType;
+	private:
+		DataType* m_Ptr;
+	public:
+		ArrayIterator(DataType* ptr)
+			: m_Ptr(ptr) {}
+
+		ArrayIterator& operator++()
+		{
+			++m_Ptr;
+			return *this;
+		}
+
+		ArrayIterator operator++(int)
+		{
+			ArrayIterator iterator = *this;
+			++m_Ptr;
+			return iterator;
+		}
+
+		ArrayIterator& operator--()
+		{
+			--m_Ptr;
+			return *this;
+		}
+
+		ArrayIterator operator--(int)
+		{
+			ArrayIterator iterator = *this;
+			--m_Ptr;
+			return iterator;
+		}
+
+		DataType& operator[](int index)
+		{
+			return +(m_Ptr + index);
+		}
+
+		DataType* operator->()
+		{
+			return m_Ptr;
+		}
+
+		DataType& operator*()
+		{
+			return *m_Ptr;
+		}
+
+		bool operator==(const ArrayIterator& other)
+		{
+			return m_Ptr == other.m_Ptr;
+		}
+
+		bool operator!=(const ArrayIterator& other)
+		{
+			return m_Ptr != other.m_Ptr;
+		}
+	};
+	
 	template<typename T, unsigned int S>
 	class Array
 	{
 	public:
-		using DataType = typename T;
-		using Iterator = Iterator<Array<T, S>>;
+		using DataType = T;
+		using Iterator = ArrayIterator<Array<T, S>>;
 	private:
 		T m_Array[S];
 	public:
@@ -56,12 +116,12 @@ namespace ds
 
 		Iterator begin()
 		{
-			return Iterator(&m_Array[0]);
+			return Iterator(m_Array);
 		}
 
 		Iterator end()
 		{
-			return Iterator(&m_Array[0] + S);
+			return Iterator(m_Array + S);
 		}
 	};
 }

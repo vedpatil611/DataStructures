@@ -1,16 +1,79 @@
 #pragma once
 
-#include "Iterator.h"
 #include <utility>
 #include <iostream>
+
 namespace ds
 {
+	template<typename T>
+	class VectorIterator
+	{
+	public:
+		using DataType = typename T::DataType;
+	private:
+		DataType* m_Ptr;
+	public:
+		VectorIterator(DataType* ptr)
+			: m_Ptr(ptr) {}
+
+		VectorIterator& operator++()
+		{
+			++m_Ptr;
+			return *this;
+		}
+
+		VectorIterator operator++(int)
+		{
+			VectorIterator iterator = *this;
+			++m_Ptr;
+			return iterator;
+		}
+
+		VectorIterator& operator--()
+		{
+			--m_Ptr;
+			return *this;
+		}
+
+		VectorIterator operator--(int)
+		{
+			VectorIterator iterator = *this;
+			--m_Ptr;
+			return iterator;
+		}
+
+		DataType& operator[](int index)
+		{
+			return +(m_Ptr + index);
+		}
+
+		DataType* operator->()
+		{
+			return m_Ptr;
+		}
+
+		DataType& operator*()
+		{
+			return *m_Ptr;
+		}
+
+		bool operator==(const VectorIterator& other)
+		{
+			return m_Ptr == other.m_Ptr;
+		}
+
+		bool operator!=(const VectorIterator& other)
+		{
+			return m_Ptr != other.m_Ptr;
+		}
+	};
+
 	template<typename T>
 	class Vector
 	{
 	public:
-		using DataType = typename T;
-		using Iterator = Iterator<Vector<T>>;
+		using DataType = T;
+		using Iterator = VectorIterator<Vector<T>>;
 	private:
 		T* m_Data;
 		size_t m_Size;
@@ -60,7 +123,6 @@ namespace ds
 		{
 			if (m_Size >= m_Capacity)
 				resize(m_Size * 2);
-			std::cout << "temp\n";
 			m_Data[m_Size++] = std::move(value);
 		}
 
