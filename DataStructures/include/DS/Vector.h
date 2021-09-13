@@ -79,13 +79,7 @@ namespace ds
 		size_t m_Size;
 		size_t m_Capacity;
 	public:
-		Vector()
-			:m_Size(0), m_Capacity(1)
-		{
-			m_Data = new T[1];
-		}
-
-		Vector(size_t capacity)
+		Vector(size_t capacity = 2)
 			:m_Size(0), m_Capacity(capacity)
 		{
 			m_Data = new T[capacity];
