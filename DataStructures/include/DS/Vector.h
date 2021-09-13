@@ -139,6 +139,14 @@ namespace ds
 			}
 		}
 
+		void clear() 
+		{
+			for(size_t i = 0; i < m_Size; ++i)
+				m_Data[i].~T();
+
+			m_Size = 0;
+		}
+
 		size_t size() const
 		{
 			return m_Size;
