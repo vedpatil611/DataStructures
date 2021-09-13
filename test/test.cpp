@@ -19,11 +19,11 @@ int main()
 
     {
         ds::Vector<int> a;
-        a.pushback(5);
-        a.pushback(2);
-        a.pushback(6);
-        a.pushback(7);
-        a.pushback(4);
+        a.push(5);
+        a.push(2);
+        a.push(6);
+        a.push(7);
+        a.push(4);
 
         for(int i : a)
             printf("%d ", i);

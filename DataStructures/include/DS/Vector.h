@@ -96,7 +96,7 @@ namespace ds
 			delete[] m_Data;
 		}
 
-		void resize(size_t capacity)
+		void reserve(size_t capacity)
 		{
 			T* newData = new T[capacity];
 
@@ -111,26 +111,26 @@ namespace ds
 			m_Capacity = capacity;
 		}
 
-		void pushback(const T& value)
+		void push(const T& value)
 		{
 			if (m_Size >= m_Capacity)
-				resize(m_Size * 2);
+				reserve(m_Size * 2);
 
 			m_Data[m_Size++] = value;
 		}
 
-		void pushback(T&& value)
+		void push(T&& value)
 		{
 			if (m_Size >= m_Capacity)
-				resize(m_Size * 2);
+				reserve(m_Size * 2);
 			m_Data[m_Size++] = std::move(value);
 		}
 
 		template<typename... Args>
-		T& emplaceback(Args&&... args)
+		T& emplace(Args&&... args)
 		{
 			if (m_Size >= m_Capacity)
-				resize(m_Size + 1);
+				reserve(m_Size + 1);
 
 			m_Data[m_Size] = T(std::forward<Args>(args)...);
 			return m_Data[m_Size++];
