@@ -126,7 +126,7 @@ namespace ds
 			if (m_Size >= m_Capacity)
 				reserve(m_Size + 1);
 
-			m_Data[m_Size] = T(std::forward<Args>(args)...);
+			new(&m_Data[m_Size]) T(std::forward<Args>(args)...);
 			return m_Data[m_Size++];
 		}
 

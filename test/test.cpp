@@ -58,11 +58,11 @@ int main()
 {
     {
         ds::Vector<Data> a;
-        a.push(Data());
-        a.push(Data(3, 5, 6));
-        a.push(Data(7, 1, 4));
-        a.push(Data(1, 2, 3));
-        a.push(Data(9, 8, 7));
+        a.emplace();
+        a.emplace(3, 5, 6);
+        a.emplace(7, 1, 4);
+        a.emplace(1, 2, 3);
+        a.emplace(9, 8, 7);
 
         //for(int i : a)
             //printf("%d ", i);
