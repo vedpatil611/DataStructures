@@ -1,6 +1,7 @@
 #include "../DataStructures/include/DS/Array.h"
 #include "../DataStructures/include/DS/Vector.h"
 #include <iostream>
+#include <vector>
 
 struct Data 
 {
@@ -57,15 +58,22 @@ struct Data
 int main()
 {
     {
+        printf("----- DS -----\n");
         ds::Vector<Data> a;
         a.emplace();
         a.emplace(3, 5, 6);
         a.emplace(7, 1, 4);
         a.emplace(1, 2, 3);
         a.emplace(9, 8, 7);
+    }
 
-        //for(int i : a)
-            //printf("%d ", i);
-        //printf("\n");
+    {
+        printf("----- STD -----\n");
+        std::vector<Data> a;
+        a.emplace_back();
+        a.emplace_back(3, 5, 6);
+        a.emplace_back(7, 1, 4);
+        a.emplace_back(1, 2, 3);
+        a.emplace_back(9, 8, 7);
     }
 }

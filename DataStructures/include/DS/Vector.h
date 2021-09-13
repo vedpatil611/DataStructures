@@ -82,17 +82,17 @@ namespace ds
 		Vector(size_t capacity = 2)
 			:m_Size(0), m_Capacity(capacity)
 		{
-			m_Data = new T[capacity];
+			m_Data = (T*)::operator new(2 * sizeof(T));
 		}
 
 		~Vector()
 		{
-			delete[] m_Data;
+			::operator delete(m_Data, m_Capacity * sizeof(T));
 		}
 
 		void reserve(size_t capacity)
 		{
-			T* newData = new T[capacity];
+			T* newData = (T*)::operator new(capacity * sizeof(T));
 
 			if (m_Size > capacity)
 				m_Size = capacity;
@@ -100,7 +100,8 @@ namespace ds
 			for (size_t i = 0; i < m_Size; ++i)
 				newData[i] = std::move(m_Data[i]);
 
-			delete[] m_Data;
+			::operator delete(m_Data, m_Capacity * sizeof(T));
+			
 			m_Data = newData;
 			m_Capacity = capacity;
 		}
@@ -124,7 +125,7 @@ namespace ds
 		T& emplace(Args&&... args)
 		{
 			if (m_Size >= m_Capacity)
-				reserve(m_Size + 1);
+				reserve(m_Size * 2);
 
 			new(&m_Data[m_Size]) T(std::forward<Args>(args)...);
 			return m_Data[m_Size++];
