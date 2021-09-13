@@ -130,11 +130,12 @@ namespace ds
 			return m_Data[m_Size++];
 		}
 
-		T popback() // Complete this later
+		T popback()
 		{
 			if (m_Size > 0)
 			{
 				m_Size--;
+				m_Data[m_Size].~T();
 			}
 		}
 
