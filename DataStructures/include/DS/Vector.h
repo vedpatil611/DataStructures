@@ -87,7 +87,7 @@ namespace ds
 
 		~Vector()
 		{
-			for(size_t i = 0; i < m_Size; ++i)
+			for(size_t i = 0; i < m_Capacity; ++i)
 				m_Data[i].~T();
 
 			::operator delete(m_Data, m_Capacity * sizeof(T));
