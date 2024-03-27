@@ -1,129 +1,102 @@
 #pragma once
 
-#ifndef ARRAY_H
-#define ARRAY_H
+#include "Iterator.h"
+#include <cstring>
+#include <functional>
 
 namespace ds
 {
-	template<typename T>
-	class ArrayIterator
-	{
-	public:
-		using DataType = typename T::DataType;
-	private:
-		DataType* m_Ptr;
-	public:
-		ArrayIterator(DataType* ptr)
-			: m_Ptr(ptr) {}
-
-		ArrayIterator& operator++()
-		{
-			++m_Ptr;
-			return *this;
-		}
-
-		ArrayIterator operator++(int)
-		{
-			ArrayIterator iterator = *this;
-			++m_Ptr;
-			return iterator;
-		}
-
-		ArrayIterator& operator--()
-		{
-			--m_Ptr;
-			return *this;
-		}
-
-		ArrayIterator operator--(int)
-		{
-			ArrayIterator iterator = *this;
-			--m_Ptr;
-			return iterator;
-		}
-
-		DataType& operator[](int index)
-		{
-			return +(m_Ptr + index);
-		}
-
-		DataType* operator->()
-		{
-			return m_Ptr;
-		}
-
-		DataType& operator*()
-		{
-			return *m_Ptr;
-		}
-
-		bool operator==(const ArrayIterator& other)
-		{
-			return m_Ptr == other.m_Ptr;
-		}
-
-		bool operator!=(const ArrayIterator& other)
-		{
-			return m_Ptr != other.m_Ptr;
-		}
-	};
-	
-	template<typename T, unsigned int S>
+	template <typename T, unsigned int S>
 	class Array
 	{
 	public:
 		using DataType = T;
-		using Iterator = ArrayIterator<Array<T, S>>;
+		using ArrayIterator = Iterator<Array<T, S>>;
+
 	private:
 		T m_Array[S];
+
 	public:
 		Array() = default;
 
-		Array(const T* other)
+		Array(const T *other)
 		{
-			memcpy(m_Array, other, S * sizeof(T));
+			std::memcpy(m_Array, other, S * sizeof(T));
 		}
 
-		Array(const Array& other)
+		Array(const Array &other)
 		{
 			m_Array = other.data();
 		}
 
-		T* data()
+		T *data()
 		{
 			return begin();
 		}
-		
-		const T* data() const 
+
+		const T *data() const
 		{
 			return begin();
 		}
-		
-		T& operator[](int index)
-		{
-			return m_Array[index];
-		}
-		
-		const T& operator[](int index) const
+
+		T &operator[](int index)
 		{
 			return m_Array[index];
 		}
 
-		constexpr unsigned int getSize() const
+		const T &operator[](int index) const
+		{
+			return m_Array[index];
+		}
+
+		constexpr unsigned int size() const
 		{
 			return S;
 		}
 
-		Iterator begin()
+		// Functional
+		void forEach(std::function<void(T &)> &func)
 		{
-			return Iterator(m_Array);
+			for (int i = 0; i < S; ++i)
+				func(m_Array[i]);
 		}
 
-		Iterator end()
+		void forEach(std::function<void(T &)> const &func)
 		{
-			return Iterator(m_Array + S);
+			for (int i = 0; i < S; ++i)
+				func(m_Array[i]);
+		}
+
+		template <typename ReturnDataType>
+		Array<ReturnDataType, S> map(std::function<ReturnDataType(T &)> &func)
+		{
+			Array<ReturnDataType, S> returnData;
+
+			for (int i = 0; i < S; ++i)
+				returnData[i] = func(m_Array[i]);
+
+			return returnData;
+		}
+
+		template <typename ReturnDataType>
+		Array<ReturnDataType, S> map(std::function<ReturnDataType(T &)> const &func)
+		{
+			Array<ReturnDataType, S> returnData;
+
+			for (int i = 0; i < S; ++i)
+				returnData[i] = func(m_Array[i]);
+
+			return returnData;
+		}
+
+		ArrayIterator begin()
+		{
+			return ArrayIterator(m_Array);
+		}
+
+		ArrayIterator end()
+		{
+			return ArrayIterator(m_Array + S);
 		}
 	};
 }
-
-#endif
